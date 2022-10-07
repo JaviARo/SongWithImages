@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="primary">
+      <ion-button fill="outline" (click)="addSong()">
+        Añadir canción
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Lista de canciones</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar placeholder="Buscar canción" animated (ionChange)="searchSongs($event)"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let song of searchedSong">
+      <ion-img class="photo-frame" *ngIf="song.filename" src="http://localhost:8080/images/{{song.filename}}"></ion-img>
+      <ion-img class="photo-frame" *ngIf="!song.filename" src="../../assets/No-Image-Placeholder.svg"></ion-img>
+      <ion-label>
+        <div class="text">
+          <h1>{{song.name}}</h1>
+          <p>{{song.duration}}</p>
+          <p>{{song.authors}}</p>
+          <p>{{song.album}}</p>
+        </div>
+      </ion-label>
+      <!-- <div class="item-note" item-end>
+        <button ion-button clear [routerLink]="['/update-song/',song.id]">
+          <ion-icon name="create" style="zoom:2"></ion-icon>
+        </button>
+        <button ion-button clear (click)="removeSong(song)">
+          <ion-icon name="trash" style="zoom:2"></ion-icon>
+        </button>
+      </div> -->
+    </ion-item>
+  </ion-list>
+</ion-content>
