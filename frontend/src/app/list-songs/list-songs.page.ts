@@ -42,4 +42,15 @@ export class ListSongsPage implements OnInit {
       })
     }
   }
+
+  removeSong(song){
+    if (window.confirm('¿Estás seguro?')) {
+      this.songService.deleteSong(song.id)
+      .subscribe(() => {
+          this.getAllSongs();
+          console.log('Canción borrada con éxito')
+        }
+      )
+    }
+  }
 }

@@ -1,26 +1,33 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { SongService } from '../services/song.service';
+
+import { Router, ActivatedRoute } from "@angular/router";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { SongService } from './../services/song.service';
 import { PhotoService } from '../services/photo.service';
-import { JsonPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-add-song',
-  templateUrl: './add-song.page.html',
-  styleUrls: ['./add-song.page.scss'],
+  selector: 'app-update',
+  templateUrl: './update-song.page.html',
+  styleUrls: ['./update-song.page.scss'],
 })
-export class AddSongPage implements OnInit {
+
+export class UpdateSongPage implements OnInit {
 
   songForm: FormGroup;
+  id: any;
+
   isSubmitted: boolean = false;
   capturedPhoto: string = "";
 
-  constructor(public formBuilder: FormBuilder,
+  constructor(
     private songService: SongService,
     private photoService: PhotoService,
+    private activatedRoute: ActivatedRoute,
+    public formBuilder: FormBuilder,
     private router: Router
-  ) { }
+  ) {
+    this.id = this.activatedRoute.snapshot.paramMap.get('id');
+  }
 
   ionViewWillEnter() {
     this.songForm.reset();
@@ -29,8 +36,9 @@ export class AddSongPage implements OnInit {
   }
 
   ngOnInit() {
+    this.fetchSong(this.id);
     this.songForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
+      name: ['h', [Validators.required]],
       duration: ['', [Validators.required]],
       authors: ['', [Validators.required]],
       album: ['']
@@ -57,10 +65,22 @@ export class AddSongPage implements OnInit {
     this.capturedPhoto = null;
   }
 
+  fetchSong(id) {
+    console.log("Adios");
+    this.songService.getSong(id).subscribe((data) => {
+      console.log(data['name']);
+      this.songForm.setValue({
+        name: "hola",
+        duration: data['duration'],
+        authors: data['authors'],
+        album: data['album']
+      });
+    });
+  }
+
   async submitForm() {
     this.isSubmitted = true;
     if (!this.songForm.valid) {
-      console.log('Please provide all the required values!')
       return false;
     } else {
       let blob = null;
@@ -68,16 +88,16 @@ export class AddSongPage implements OnInit {
         const response = await fetch(this.capturedPhoto);
         blob = await response.blob();
       }
-      console.log("comprobando cosas")
-      console.log(this.songForm.value)
-      this.songService.createSong(this.songForm.value, blob).subscribe(data => {
-        console.log("Photo sent!");
-        this.router.navigateByUrl("/list-songs");
-      })
+      this.songService.updateSong(this.id, this.songForm.value,blob)
+        .subscribe(() => {
+          this.songForm.reset();
+          this.router.navigate(['/list-songs']);
+        })
     }
   }
 
-  goToSongs(){
+  gotoSongs() {
     this.router.navigateByUrl("/list-songs");
   }
+
 }

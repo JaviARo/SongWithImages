@@ -1,16 +1,15 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="primary">
-      <ion-button fill="outline" (click)="goToSongs()">
+      <ion-button fill="outline" (click)="gotoSongs()">
         Volver
       </ion-button>
     </ion-buttons>
-    <ion-title>Añadir canción</ion-title>
+    <ion-title>Modificar canción</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
   <ion-grid>
     <ion-row class="ion-align-items-center">
       <ion-col size="6">
@@ -19,17 +18,17 @@
           (click)="takePhoto()"></ion-img>
       </ion-col>
       <ion-col size="6">
-        <ion-button fill="outline" (click)="takePhoto()">
+        <ion-button color="primary" fill="outline" (click)="takePhoto()">
           <ion-icon slot="start" name="camera-outline"></ion-icon>
-          Tomar una foto
+          Take a photo
         </ion-button>
-        <ion-button fill="outline" (click)="pickImage()">
+        <ion-button color="primary" fill="outline" (click)="pickImage()">
           <ion-icon slot="start" name="image-outline"></ion-icon>
-          Elegir una imagen
+          Pick an image
         </ion-button>
         <ion-button color="danger" fill="outline" (click)="discardImage()">
           <ion-icon slot="start" name="aperture"></ion-icon>
-          Desechar imagen
+          Discard image
         </ion-button>
       </ion-col>
     </ion-row>
@@ -57,7 +56,7 @@
     </ion-item>
     <ion-row>
       <ion-col>
-        <ion-button type="submit" fill="outline" expand="block">Añadir</ion-button>
+        <ion-button type="submit" fill="outline" expand="block">Actualizar</ion-button>
       </ion-col>
     </ion-row>
   </form>
